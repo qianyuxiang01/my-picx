@@ -2,7 +2,7 @@ import router from "./plugins/router"
 // import storage from "./utils/storage";
 
 router.beforeEach((to, from, next) => {
-    console.log("router跳转到路径： ", to.path)
+    console.log("router从", from.path, "跳转到： ", to.path)
 
     // const path = to.path
     // const token = storage.local.get('auth-token')
@@ -10,5 +10,5 @@ router.beforeEach((to, from, next) => {
     //     router.push('/auth')
     //     return
     // }
-    // next()
+    next()
 })
