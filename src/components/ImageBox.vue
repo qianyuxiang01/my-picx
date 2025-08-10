@@ -16,7 +16,7 @@
 			:preview-src-list="[src]"
 		/>
 		<div class="w-full absolute left-0 bottom-0 bg-slate-800/70 backdrop-blur-sm">
-			<div class="p-2">
+			<!-- <div class="p-2">
 				<div class="w-full flex items-center text-white">
 					<div class="flex-1 w-full truncate">
 						<el-tooltip :content="name" placement="top-start">
@@ -38,8 +38,8 @@
 						{{ new Date(uploadedAt).toLocaleDateString() }}
 					</span>
 				</span>
-			</div>
-			<div v-if="mode === 'uploaded'">
+			</div> -->
+			<!-- <div v-if="mode === 'uploaded'">
 				<el-divider class="m-0" />
 				<div class="w-full flex text-white h-9 text-center text-sm">
 					<el-tooltip :content="src" placement="top-start">
@@ -72,7 +72,7 @@
 						</template>
 					</el-popconfirm>
 				</div>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>

@@ -56,9 +56,9 @@ import { useRouter } from 'vue-router'
 import { ElScrollbar, ElConfigProvider } from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
-const repoLink = 'https://roim.app'
+const repoLink = 'https://maid.pandagent.cloud'
 // const repoName = 'roim-picx'
-const repoName = 'my-picx'
+const repoName = 'MY-PICX'
 const appName = 'PICX'
 
 document.title = appName
