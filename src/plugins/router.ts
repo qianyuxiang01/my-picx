@@ -7,6 +7,12 @@ const router = createRouter({
 			path: '/',
 			component: () => import('../views/ManageImages.vue')
 		},
+		{
+			path: '/folder/:folderName',
+			name: 'folderList',
+			props: true,
+			component: () => import('../views/FolderList.vue')
+		},
 		// {
 		// 	path: '/up',
 		// 	component: () => import('../views/UploadImages.vue')

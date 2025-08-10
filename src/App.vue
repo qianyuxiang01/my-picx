@@ -7,7 +7,7 @@
 				>
 					<div class="mx-auto max-w-6xl px-4 h-full flex items-center">
 						<img src="./assets/picx-logo.png" class="w-8 h-8 block mr-2" />
-						<div class="text-lg">
+						<div class="text-lg" @click="router.push('/')">
 							{{ appName }}
 						</div>
 						<div class="flex-1"></div>
@@ -23,7 +23,7 @@
 							<span class="hidden md:inline-block pl-2">上传</span>
 						</div> -->
 
-						<div
+						<!-- <div
 							:class="{
 								'bg-rose-300': $route.path === '/'
 							}"
@@ -32,7 +32,7 @@
 						>
 							<font-awesome-icon :icon="faCog" :class="[$route.path === '/' ? 'text-white' : 'text-gray-500']" />
 							<span class="hidden md:inline-block pl-2">管理</span>
-						</div>
+						</div> -->
 					</div>
 				</div>
 

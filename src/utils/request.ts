@@ -50,6 +50,10 @@ request.interceptors.response.use(
 )
 
 export const requestListImages = (data : ImgReq): Promise<ImgList> => request.post('/rest/list', data)
+export const requestListFolders = (data : ImgReq): Promise<ImgList> => {
+	// console.log("requestUrl:", request.getUri())
+	return request.post('/list', data, {baseURL: '/rest'})
+}
 // export const requestUploadImages = (data: FormData) : Promise<ImgItem[]> => request.post('/rest/upload', data)
 // export const createFolder = (data: Folder) => request.post('/rest/folder', data)
 // export const checkToken = (data: AuthToken) => request.post('/rest/checkToken', data)

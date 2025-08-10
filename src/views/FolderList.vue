@@ -18,13 +18,13 @@
         />
       </div> -->
 		</div>
-    <div class="my-2 flex items-center justify-start flex-wrap">
+    <!-- <div class="my-2 flex items-center justify-start flex-wrap">
       <div v-for="it in prefixes" class="px-4 py-2 items-center flex rounded-lg bg-white shadow-md cursor-pointer mx-1" @click="changeFolder(it)">
         <font-awesome-icon :icon="faFolder" class="text-3xl text-amber-500" />
         <span v-if="it !== '/'" class="pl-2 text-gray-600"> {{ it.replace("/", "") }}</span>
         <span v-else class="pl-2 text-gray-600"> {{ it }}</span>
       </div>
-    </div>
+    </div> -->
 		<div class="grid gap-2 lg:gap-4 lg:grid-cols-4 grid-cols-2">
 			<transition-group name="el-fade-in-linear">
 				<div
@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 // import { requestListImages, requestDeleteImage, createFolder } from '../utils/request'
-import { requestListImages } from '../utils/request'
+import { requestListFolders } from '../utils/request'
 import LoadingOverlay from '../components/LoadingOverlay.vue'
 import formatBytes from '../utils/format-bytes'
 import { computed, onMounted, ref } from 'vue'
@@ -57,6 +57,10 @@ import { ElMessageBox, ElMessage } from 'element-plus'
 import { faRedoAlt, faFolder, faFolderPlus } from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
+const props = defineProps<{folderName: string}>()
+console.log("folderName: ", props.folderName)
+const folderName =  props.folderName
+
 const loading = ref(false)
 const delimiter = ref('/')
 const uploadedImages = ref<ImgItem[]>([])
@@ -64,11 +68,47 @@ const prefixes = ref<String[]>([])
 const imagesTotalSize = computed(() =>
     uploadedImages.value.reduce((total, item) => total + item.size, 0)
 )
-const changeFolder = (path : string) => {
-  console.log(path)
-  delimiter.value = path
-  listImages()
+
+const listImages = () => {
+	loading.value = true
+    delimiter.value = folderName
+	requestListFolders(<ImgReq> {
+    limit: 100,
+    delimiter: delimiter.value
+  }).then((data) => {
+    uploadedImages.value = data.list
+    if (data.prefixes && data.prefixes.length) {
+      prefixes.value = data.prefixes
+      if (delimiter.value !== '/') {
+        prefixes.value = ['/', ...data.prefixes]
+      }
+    } else {
+      prefixes.value = ['/']
+    }
+  }).catch(() => {})
+	.finally(() => {
+		loading.value = false
+	})
 }
+
+onMounted(() => {
+	listImages()
+})
+
+
+const deleteImage = (src: string) => {
+  console.log("删除图片： ", src)
+	// requestDeleteImage({
+  //   keys: src
+  // }).then((res) => {
+	// 	uploadedImages.value = uploadedImages.value.filter((item) => item.key !== res)
+	// })
+}
+// const changeFolder = (path : string) => {
+//   console.log(path)
+//   delimiter.value = path
+//   listImages()
+// }
 const addFolder = () => {
   console.log("TODO新增目录")
   // ElMessageBox.prompt('请输入目录名称，仅支持英文名称', '新增目录', {
@@ -90,38 +130,5 @@ const addFolder = () => {
   //     loading.value = false
   //   })
   // }).catch(() => {})
-}
-const listImages = () => {
-	loading.value = true
-	requestListImages(<ImgReq> {
-    limit: 100,
-    delimiter: delimiter.value
-  }).then((data) => {
-    uploadedImages.value = data.list
-    if (data.prefixes && data.prefixes.length) {
-      prefixes.value = data.prefixes
-      if (delimiter.value !== '/') {
-        prefixes.value = ['/', ...data.prefixes]
-      }
-    } else {
-      prefixes.value = ['/']
-    }
-  }).catch(() => {})
-		.finally(() => {
-			loading.value = false
-		})
-}
-
-onMounted(() => {
-	listImages()
-})
-
-const deleteImage = (src: string) => {
-  console.log("删除图片： ", src)
-	// requestDeleteImage({
-  //   keys: src
-  // }).then((res) => {
-	// 	uploadedImages.value = uploadedImages.value.filter((item) => item.key !== res)
-	// })
 }
 </script>
