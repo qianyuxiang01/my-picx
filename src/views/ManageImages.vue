@@ -29,7 +29,7 @@
 			<transition-group name="el-fade-in-linear">
 				<div
 					class="col-span-1 md:col-span-1"
-					v-for="item in uploadedImages"
+					v-for="(item, index) in uploadedImages"
 					:key="item.url"
 				>
 					<image-box
@@ -38,6 +38,9 @@
             :size="item.size"
 						@delete="deleteImage(item.key)"
 						mode="uploaded"
+						:image-list="imageUrls"
+						:index="index"
+						@navigate="handleNavigate(index, $event)"
 					/>
 				</div>
 			</transition-group>
@@ -60,10 +63,19 @@ import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 const loading = ref(false)
 const delimiter = ref('/')
 const uploadedImages = ref<ImgItem[]>([])
-const prefixes = ref<String[]>([])
+const prefixes = ref<string[]>([])
 const imagesTotalSize = computed(() =>
     uploadedImages.value.reduce((total, item) => total + item.size, 0)
 )
+
+const imageUrls = computed(() => 
+    uploadedImages.value.map(item => item.url)
+)
+
+const handleNavigate = (currentIndex: number, targetIndex: number) => {
+	console.log(`Navigate from ${currentIndex} to ${targetIndex}`)
+}
+
 const changeFolder = (path : string) => {
   console.log(path)
   delimiter.value = path

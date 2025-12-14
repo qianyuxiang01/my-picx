@@ -27,7 +27,7 @@ export interface ImgList {
 	cursor ?: string
 	list : Array<ImgItem>
 
-	prefixes ?: Array<String>
+	prefixes ?: Array<string>
 }
 
 export interface ImgDel {

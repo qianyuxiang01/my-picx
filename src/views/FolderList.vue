@@ -4,9 +4,9 @@
 
 		<div class="flex items-center justify-between mb-4">
 			<div>
-				<div class="text-gray-800 text-lg">管理图片</div>
+				<!-- <div class="text-gray-800 text-lg">管理图片</div> -->
 				<div class="text-sm text-gray-500">
-					已上传 {{ uploadedImages.length }} 张图片，共 {{ formatBytes(imagesTotalSize) }}
+					共 {{ uploadedImages.length }} 张图片, {{ formatBytes(imagesTotalSize) }}
 				</div>
 			</div>
       <!-- <div class="flex items-center justify-start">
@@ -29,7 +29,7 @@
 			<transition-group name="el-fade-in-linear">
 				<div
 					class="col-span-1 md:col-span-1"
-					v-for="item in uploadedImages"
+					v-for="(item, index) in uploadedImages"
 					:key="item.url"
 				>
 					<image-box
@@ -38,6 +38,9 @@
             :size="item.size"
 						@delete="deleteImage(item.key)"
 						mode="uploaded"
+						:image-list="imageUrls"
+						:index="index"
+						@navigate="handleNavigate(index, $event)"
 					/>
 				</div>
 			</transition-group>
@@ -64,10 +67,18 @@ const folderName =  props.folderName
 const loading = ref(false)
 const delimiter = ref('/')
 const uploadedImages = ref<ImgItem[]>([])
-const prefixes = ref<String[]>([])
+const prefixes = ref<string[]>([])
 const imagesTotalSize = computed(() =>
     uploadedImages.value.reduce((total, item) => total + item.size, 0)
 )
+
+const imageUrls = computed(() => 
+    uploadedImages.value.map(item => item.url)
+)
+
+const handleNavigate = (currentIndex: number, targetIndex: number) => {
+	console.log(`Navigate from ${currentIndex} to ${targetIndex}`)
+}
 
 const listImages = () => {
 	loading.value = true
